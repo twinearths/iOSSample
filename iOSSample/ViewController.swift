@@ -7,9 +7,9 @@
 
 import UIKit
 
-
 class ViewController: UITableViewController {
-    
+    let listData:[String:[String]] = ["魚":["マグロ","カツオ","サンマ"],
+                                      "果物":["リンゴ","イチゴ","ナシ","ミカン","スイカ","オレンジ","イチジク","モモ","マンゴー"]]
     override func viewDidLoad() {
         title = "第1画面"
         view.backgroundColor = .white
@@ -17,16 +17,43 @@ class ViewController: UITableViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
     }
     
-    let listData:[String:[String]] = ["魚":["マグロ","カツオ","サンマ"],
-                                      "果物":["リンゴ","イチゴ","ナシ","ミカン","スイカ","オレンジ","イチジク","モモ","マンゴー"]]
-    
-    // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
         return listData.keys.count
     }
   
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return createSectionTitle(section)
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 40
+    }
 
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        let key = Array(listData.keys)[section]
+        return listData[key]?.count ?? 0
+    }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        let key = Array(listData.keys)[indexPath.section]
+        let data = listData[key]
+        cell.textLabel?.text = data?[indexPath.row]
+
+        return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let ctr = UIViewController(nibName: nil, bundle: nil)
+        ctr.view.backgroundColor = .white
+        let key = Array(listData.keys)[indexPath.section]
+        let data = listData[key]
+        ctr.title = data?[indexPath.row]
+        
+        navigationController?.pushViewController(ctr, animated: true)
+    }
+    
+    private func createSectionTitle(_ section: Int) -> UIView {
         let sectionTitle = Array(listData.keys)[section]
         var frame = CGRect(origin: .zero, size: CGSize(width: tableView.frame.size.width, height: 40))
         let view = UIView(frame: frame)
@@ -42,26 +69,6 @@ class ViewController: UITableViewController {
         view.addSubview(lbl)
         
         return view
-    }
-    
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-           return 40
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        let key = Array(listData.keys)[section]
-        return listData[key]?.count ?? 0
-    }
-
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-      
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        let key = Array(listData.keys)[indexPath.section]
-        let data = listData[key]
-        cell.textLabel?.text = data?[indexPath.row]
-
-        return cell
     }
 }
 

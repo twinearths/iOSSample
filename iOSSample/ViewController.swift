@@ -10,7 +10,7 @@ import UIKit
 class ViewController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
     var myControllers = [UIViewController]()
-
+    
     @IBAction func pushButton(sender:UIButton) {
         presentPageVC()
     }
@@ -33,15 +33,15 @@ class ViewController: UIViewController, UIPageViewControllerDataSource, UIPageVi
             return
         }
         let pvc = UIPageViewController(transitionStyle: .pageCurl,
-                                      navigationOrientation: .horizontal,
-                                      options: nil)
+                                       navigationOrientation: .horizontal,
+                                       options: nil)
         pvc.delegate = self
         pvc.dataSource = self
         
         pvc.setViewControllers([first],
-                              direction: .forward,
-                              animated: true,
-                              completion: nil)
+                               direction: .forward,
+                               animated: true,
+                               completion: nil)
         
         present(pvc, animated: true)
     }
@@ -51,7 +51,7 @@ class ViewController: UIViewController, UIPageViewControllerDataSource, UIPageVi
         guard let index = myControllers.firstIndex(of: viewController), index > 0 else {
             return nil
         }
-
+        
         let before = index - 1
         return myControllers[before]
     }
@@ -60,7 +60,7 @@ class ViewController: UIViewController, UIPageViewControllerDataSource, UIPageVi
         guard let index = myControllers.firstIndex(of: viewController), index < (myControllers.count - 1)  else {
             return nil
         }
-
+        
         let after = index + 1
         return myControllers[after]
     }
